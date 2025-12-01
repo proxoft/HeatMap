@@ -1,0 +1,19 @@
+﻿<Project>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <AssemblyName>Proxoft.Heatmaps.$(MSBuildProjectName)</AssemblyName>
+        <RootNamespace>Proxoft.Heatmaps.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+
+        <Authors>Proxoft s.r.o.</Authors>
+        <Copyright>www.proxoft.sk</Copyright>
+        <Product>Heatmaps</Product>
+        <Version>0.0.0</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+    </ItemGroup>
+</Project>

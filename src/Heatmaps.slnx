@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/SolutionItems/">
+    <File Path="Directory.build.props" />
+  </Folder>
+  <Project Path="Core.Tests/Core.Tests.csproj" Id="6e2ec765-5db0-4646-827d-f42ce1004907" />
+  <Project Path="Core/Core.csproj" Id="ef1fb7ef-040f-4b33-b532-5e3f9b821b95" />
+</Solution>
