@@ -11,6 +11,17 @@
         <Copyright>www.proxoft.sk</Copyright>
         <Product>Heatmaps</Product>
         <Version>0.0.0</Version>
+
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Title>Heatmaps</Title>
+        <Description>A library to create Heatmaps which can be easily exported to SVG, and integrated into map apis (OSM, GoogleMaps, ...).</Description>
+        <PackageProjectUrl>https://github.com/proxoft/HeatMap</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/proxoft/HeatMap</RepositoryUrl>
+        <PackageTags>HeatMaps;Maps;NET;SVG;IDW</PackageTags>
+        <IncludeSymbols>True</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
     </PropertyGroup>
 
     <ItemGroup>
