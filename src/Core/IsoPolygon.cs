@@ -30,6 +30,8 @@ public sealed class IsoPolygon : ValueObject<IsoPolygon>
 
     public Coordinate[] Points => _points;
 
+    public Edge[] Edges => _edges;
+
     protected override bool EqualsCore(IsoPolygon other) =>
         this.Value == other.Value
         && _points.SequenceEqual(other._points);

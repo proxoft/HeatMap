@@ -59,7 +59,9 @@ internal static class SvgExport
             "blue",
             "orange",
             "yellow",
-            "gray"
+            "gray",
+            "cyan",
+            "purple"
         ];
 
         int fillIndex = 0;
@@ -77,11 +79,19 @@ internal static class SvgExport
     {
         StringBuilder sb = new();
 
-        sb.AppendLine(idwTriangle.A.ToPolyline(svgHeight));
-        sb.AppendLine(idwTriangle.B.ToPolyline(svgHeight));
-        sb.AppendLine(idwTriangle.C.ToPolyline(svgHeight));
+        sb.AppendLine(idwTriangle.A.ToLine(svgHeight));
+        sb.AppendLine(idwTriangle.B.ToLine(svgHeight));
+        sb.AppendLine(idwTriangle.C.ToLine(svgHeight));
 
         return sb.ToString();
+    }
+
+    public static string ToLine(this IdwLine idwLine, decimal svgHeight)
+    {
+        Coordinate s = idwLine.Points.First().Coordinate;
+        Coordinate e = idwLine.Points.Last().Coordinate;
+
+        return $"<line x1=\"{s.X}\" y1=\"{svgHeight - s.Y}\" x2=\"{e.X}\" y2=\"{svgHeight - e.Y}\" stroke=\"black\" />";
     }
 
     public static string ToPolyline(this IdwLine idwLine, decimal svgHeight)
@@ -132,13 +142,8 @@ internal static class SvgExport
                 (acc, holePath) => $"{acc} {holePath}"
             );
 
-        return $"<polygon points=\"{path}\" fill=\"{fillColor}\" />";
+        return $"<polygon points=\"{path}\" fill=\"{fillColor}\" value=\"{isoBand.Value}\" />";
     }
-
-    //public static string ToPolygone(this IsoPolygon isoPolygon, decimal svgHeight, string? fillColor)
-    //{
-
-    //}
 
     private static string CreateSvg(this Bounds bounds, string content, Padding padding)
     {

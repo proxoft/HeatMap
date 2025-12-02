@@ -28,10 +28,10 @@ internal static class IdwGridExtensions
     extension(IdwGrid grid)
     {
         public IEnumerable<IdwCell> Cells => Enumerable
-            .Range(0, Math.Max(0, grid.RowCount - 1))
+            .Range(0, Math.Max(0, grid.RowCount))
             .SelectMany(rowindex =>
                 Enumerable
-                    .Range(0, Math.Max(0, grid.ColCount - 1))
+                    .Range(0, Math.Max(0, grid.ColCount))
                     .Select(colindex => grid.Cell(rowindex, colindex))
             );
 

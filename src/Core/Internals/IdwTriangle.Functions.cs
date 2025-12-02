@@ -58,16 +58,18 @@ internal static class IdwTriangleIsoBandFunctions
     public static IsoBand[] CreateIsoBands(this IEnumerable<IdwTriangle> triangles, decimal[] levels) =>
         [.. triangles
             .SelectMany(t => CreateIsoBands(t, levels))
-            // .MergeNeighboursWithSameLevel()
+            .MergeNeighboursWithSameLevel()
         ];
 
     public static IsoBand[] CreateIsoBands(this IdwTriangle triangle, decimal[] levels)
     {
-        IEnumerable<IsoBand> isoBands = triangle
-            .GetEdgePoints()
-            .FindAtomicIsoBands(levels);
+        IsoBand[] isoBands = [
+            ..triangle
+                .GetEdgePoints()
+                .FindAtomicIsoBands(levels)
+        ];
 
-        return [..isoBands];
+        return isoBands;
     }
 
     private static IEnumerable<IsoBand> FindAtomicIsoBands(

@@ -12,6 +12,9 @@ public sealed class MapPoint(Coordinate coordinate, decimal value) : ValueObject
 
     protected override int GetHashCodeCore() =>
         HashCode.Combine(this.Value, this.Coordinate);
+
+    public static implicit operator MapPoint((decimal x, decimal y, decimal value) data) =>
+        new(new Coordinate(data.x, data.y), data.value);
 }
 
 public static class MapPointFunctions

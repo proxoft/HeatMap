@@ -4,6 +4,16 @@ internal static class BoundsFunctions
 {
     extension (Bounds bounds)
     {
+        public bool Intersects(Bounds other)
+        {
+            bool distinct= bounds.Right < other.Left
+                || bounds.Left > other.Right
+                || bounds.Bottom > other.Top
+                || bounds.Top < other.Bottom;
+
+            return !distinct;
+        }
+
         public Bounds Merge(Bounds other) =>
             new(
                 Left: Math.Min(bounds.Left, other.Left),

@@ -11,4 +11,7 @@ public class GridCoordinate(int column, int row) : ValueObject<GridCoordinate>
 
     protected override int GetHashCodeCore() =>
         HashCode.Combine(this.Column, this.Row);
+
+    public static implicit operator GridCoordinate((int col, int row) coordinates) =>
+        new(coordinates.col, coordinates.row);
 }
