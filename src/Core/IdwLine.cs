@@ -99,9 +99,7 @@ file static class Functions
     public static bool IsValueBetween(this decimal value, MapPoint p1, MapPoint p2) =>
         value.IsBetween(p1.Value, p2.Value);
 
-    public static bool IsBetween(this decimal value, decimal left, decimal right)
-    {
-        return left <= right && value >= left && value <= right
-            || left > right && value <= left && value >= right;
-    }
+    public static bool IsBetween(this decimal value, decimal left, decimal right) =>
+        left <= right && value >= left && value <= right
+        || left > right && value <= left && value >= right;
 }
