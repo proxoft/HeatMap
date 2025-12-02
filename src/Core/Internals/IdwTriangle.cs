@@ -1,4 +1,4 @@
-﻿namespace Proxoft.Heatmaps.Core;
+﻿namespace Proxoft.Heatmaps.Core.Internals;
 
 internal sealed class IdwTriangle(
     IdwLine a,
@@ -9,14 +9,12 @@ internal sealed class IdwTriangle(
     public IdwLine B { get; } = b;
     public IdwLine C { get; } = c;
 
-    public static IdwTriangle FromPoints(MapPoint a, MapPoint b, MapPoint c, decimal[] splitEdgesLevels)
-    {
-        return new IdwTriangle(
+    public static IdwTriangle FromPoints(MapPoint a, MapPoint b, MapPoint c, decimal[] splitEdgesLevels) =>
+        new(
             IdwLine.From(a, b, splitEdgesLevels),
             IdwLine.From(b, c, splitEdgesLevels),
             IdwLine.From(c, a, splitEdgesLevels)
         );
-    }
 
     protected override bool EqualsCore(IdwTriangle other) =>
         other.A == this.A

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Proxoft.Heatmaps.Core.Internals;
 
 namespace Proxoft.Heatmaps.Core.Tests;
 
@@ -11,7 +12,8 @@ public class IdwTriangleTest
         IdwTriangle t = Factory.Create(
             v0x0: 10,
             v60x0: 20,
-            v30x30: 30
+            v30x30: 30,
+            [30, 40, 50]
         );
 
         IsoLine[] isoLines = t.CreateIsoLines();
@@ -23,195 +25,195 @@ public class IdwTriangleTest
     }
 
     [Fact]
-    public void OneIsoLine_EdgeToEdge1()
+    public void OneIsoLine_C_ToEdgeC()
     {
         IdwTriangle t = Factory.Create(
             v0x0: 10,
-            v30x0: 15,
             v60x0: 20,
             v30x30: 30,
-            v20x20: 15
+            [0, 15, 30]
         );
 
         IsoLine[] isoLines = t.CreateIsoLines();
+
+        SaveToSvg([t], isoLines);
+
         isoLines.Length
             .Should()
             .Be(1);
 
         isoLines[0]
             .Should()
-            .Be(new IsoLine(["20x20".Coord(), "30x0".Coord()], 15));
-
-        SaveToSvg([t], isoLines);
+            .Be(new IsoLine(["7.5x7.5".Coord(), "30x0".Coord()], 15));
     }
 
     [Fact]
-    public void OneIsoLine_EdgeToEdge2()
+    public void OneIsoLine_B_ToEdgeB()
+    {
+        IdwTriangle t = Factory.Create(
+            v0x0: 30,
+            v60x0: 40,
+            v30x30: 50,
+            [0, 40, 80]
+        );
+
+        IsoLine[] isoLines = t.CreateIsoLines();
+
+        SaveToSvg([t], isoLines);
+
+        isoLines.Length
+            .Should()
+            .Be(1);
+
+        isoLines[0]
+            .Should()
+            .Be(new IsoLine(["15x15".Coord(), "60x0".Coord()], 40));
+    }
+
+    [Fact]
+    public void OneIsoLine_A_ToEdgeA()
+    {
+        IdwTriangle t = Factory.Create(
+            v0x0: 40,
+            v60x0: 30,
+            v30x30: 50,
+            [0, 40, 80]
+        );
+
+        IsoLine[] isoLines = t.CreateIsoLines();
+
+        SaveToSvg([t], isoLines);
+
+        isoLines.Length
+            .Should()
+            .Be(1);
+
+        isoLines[0]
+            .Should()
+            .Be(new IsoLine(["45x15".Coord(), "0x0".Coord()], 40));
+    }
+
+    [Fact]
+    public void OneIsoLine_EdgeC_To_EdgeB()
     {
         IdwTriangle t = Factory.Create(
             v0x0: 10,
             v60x0: 20,
-            v50x10: 15,
-            v30x30: 20,
-            v20x20: 15
+            v30x30: 10,
+            [0, 15, 30]
         );
 
         IsoLine[] isoLines = t.CreateIsoLines();
+
+        SaveToSvg([t], isoLines);
+
         isoLines.Length
             .Should()
             .Be(1);
 
         isoLines[0]
             .Should()
-            .Be(new IsoLine(["50x10".Coord(), "20x20".Coord()], 15));
-
-        SaveToSvg([t], isoLines);
+            .Be(new IsoLine(["30x0".Coord(), "45x15".Coord()], 15));
     }
 
     [Fact]
-    public void OneIsoLine_EdgeToEdge3()
+    public void OneIsoLine_EdgeB_To_EdgeA()
+    {
+        IdwTriangle t = Factory.Create(
+            v0x0: 10,
+            v60x0: 10,
+            v30x30: 30,
+            [0, 20, 40]
+        );
+
+        IsoLine[] isoLines = t.CreateIsoLines();
+
+        SaveToSvg([t], isoLines);
+
+        isoLines.Length
+            .Should()
+            .Be(1);
+
+        isoLines[0]
+            .Should()
+            .Be(new IsoLine(["45x15".Coord(), "15x15".Coord()], 20));
+    }
+
+    [Fact]
+    public void OneIsoLine_EdgeB_EdgeC()
     {
         IdwTriangle t = Factory.Create(
             v0x0: 10,
             v60x0: 20,
-            v50x10: 15,
-            v30x30: 20,
-            v20x20: 15
+            v30x30: 26,
+            [0, 15, 30]
         );
 
         IsoLine[] isoLines = t.CreateIsoLines();
+
+        SaveToSvg([t], isoLines);
+
         isoLines.Length
             .Should()
             .Be(1);
 
         isoLines[0]
             .Should()
-            .Be(new IsoLine(["50x10".Coord(), "20x20".Coord()], 15));
-
-        SaveToSvg([t], isoLines);
+            .Be(new IsoLine(["9.375x9.375".Coord(), "30x0".Coord()], 15));
     }
 
     [Fact]
-    public void OneIsoLine_EdgeToVertex1()
+    public void TwoIsoLines_EdgeA_To_EdgeC_EdgeB()
     {
         IdwTriangle t = Factory.Create(
-            v0x0: 10,
-            v15x0: 15,
-            v60x0: 20,
-            v30x30: 15
+            v0x0: 30,
+            v60x0: 50,
+            v30x30: 5,
+            [0, 20, 40, 60]
         );
 
         IsoLine[] isoLines = t.CreateIsoLines();
-        isoLines.Length
-            .Should()
-            .Be(1);
-
-        isoLines[0]
-            .Should()
-            .Be(new IsoLine(["15x0".Coord(), "30x30".Coord()], 15));
 
         SaveToSvg([t], isoLines);
-    }
 
-    [Fact]
-    public void OneIsoLine_EdgeToVertex2()
-    {
-        IdwTriangle t = Factory.Create(
-            v0x0: 15,
-            v60x0: 20,
-            v40x20: 15,
-            v30x30: 10
-        );
-
-        IsoLine[] isoLines = t.CreateIsoLines();
-        isoLines.Length
-            .Should()
-            .Be(1);
-
-        isoLines[0]
-            .Should()
-            .Be(new IsoLine(["40x20".Coord(), "0x0".Coord()], 15));
-
-        SaveToSvg([t], isoLines);
-    }
-
-    [Fact]
-    public void OneIsoLine_EdgeToVertex3()
-    {
-        IdwTriangle t = Factory.Create(
-            v0x0: 10,
-            v60x0: 15,
-            v30x30: 20,
-            v20x20: 15
-        );
-
-        IsoLine[] isoLines = t.CreateIsoLines();
-        isoLines.Length
-            .Should()
-            .Be(1);
-
-        isoLines[0]
-            .Should()
-            .Be(new IsoLine(["20x20".Coord(), "60x0".Coord()], 15));
-
-        SaveToSvg([t], isoLines);
-    }
-
-    [Fact]
-    public void TwoIsoLines_A_IsInMiddle()
-    {
-        IdwTriangle t = Factory.Create(
-            v0x0: 35, // A
-            v45x0: 40,
-            v60x0: 50, // B
-            v50x10: 40,
-            v40x20: 20,
-            v30x30: 10, // C
-            v20x20: 20
-        );
-
-        IsoLine[] isoLines = t.CreateIsoLines();
         isoLines.Length
             .Should()
             .Be(2);
 
         isoLines[0]
             .Should()
-            .Be(new IsoLine(["45x0".Coord(), "50x10".Coord()], 40));
+            .Be(new IsoLine(["30x0".Coord(), "53.333333333333333333333333334x6.6666666666666666666666666663".Coord()], 40));
 
         isoLines[1]
             .Should()
-            .Be(new IsoLine(["40x20".Coord(), "20x20".Coord()], 20));
-
-        SaveToSvg([t], isoLines);
+            .Be(new IsoLine(["39.999999999999999999999999999x20.000000000000000000000000001".Coord(), "12x12".Coord()], 20));
     }
 
     [Fact]
-    public void TwoIsoLines_EdgeEdge_EdgeVertexA()
+    public void TwoIsoLines_EdgeB_To_EdgeC_VertexA()
     {
         IdwTriangle t = Factory.Create(
             v0x0: 30, // A
-            v45x0: 40,
             v60x0: 50, // B
-            v50x10: 40,
-            v40x20: 30,
-            v30x30: 20 // C
+            v30x30: 20, // C
+            [20, 30, 40, 50]
         );
 
         IsoLine[] isoLines = t.CreateIsoLines();
+
+        SaveToSvg([t], isoLines);
+
         isoLines.Length
             .Should()
             .Be(2);
 
         isoLines[0]
             .Should()
-            .Be(new IsoLine(["45x0".Coord(), "50x10".Coord()], 40));
+            .Be(new IsoLine(["30x0".Coord(), "50x10".Coord()], 40));
 
         isoLines[1]
             .Should()
-            .Be(new IsoLine(["40x20".Coord(), "0x0".Coord()], 30));
-
-        SaveToSvg([t], isoLines);
+            .Be(new IsoLine(["39.999999999999999999999999999x 20.000000000000000000000000001".Coord(), "0x0".Coord()], 30));
     }
 
     private static void SaveToSvg(
@@ -225,57 +227,6 @@ public class IdwTriangleTest
 
 file static class Factory
 {
-    public static IdwTriangle Create(
-        decimal? v0x0 = null,
-        decimal? v15x0 = null,
-        decimal? v30x0 = null,
-        decimal? v45x0 = null,
-        decimal? v60x0 = null,
-        decimal? v50x10 = null,
-        decimal? v40x20 = null,
-        decimal? v30x30 = null,
-        decimal? v20x20 = null,
-        decimal? v10x10 = null
-    )
-    {
-        IdwLine[] lines = [.. CreateLines(
-            v0x0,
-            v15x0,
-            v30x0,
-            v45x0,
-            v60x0,
-            v50x10,
-            v40x20,
-            v30x30,
-            v20x20,
-            v10x10
-        )];
-
-        return new IdwTriangle(lines[0], lines[1], lines[2]);
-    }
-
-    private static IEnumerable<IdwLine> CreateLines(
-        decimal? v0x0,
-        decimal? v15x0,
-        decimal? v30x0,
-        decimal? v45x0,
-        decimal? v60x0,
-        decimal? v50x10,
-        decimal? v40x20,
-        decimal? v30x30,
-        decimal? v20x20,
-        decimal? v10x10)
-    {
-        yield return new[] { ("0x0", v0x0), ("15x0", v15x0), ("30x0", v30x0), ("45x0", v45x0), ("60x0", v60x0) }.CreateLine();
-        yield return new[] { ("60x0", v60x0), ("50x10", v50x10), ("40x20", v40x20), ("30x30", v30x30) }.CreateLine();
-        yield return new[] { ("30x30", v30x30), ("20x20", v20x20), ("10x10", v10x10), ("0x0", v0x0) }.CreateLine();
-    }
-
-    private static IdwLine CreateLine(this IEnumerable<(string, decimal?)> coordinates) =>
-        new([.. coordinates.ToMapPoints()]);
-
-    private static IEnumerable<MapPoint> ToMapPoints(this IEnumerable<(string coordinate, decimal? value)> pairs) =>
-        pairs
-           .Where(p => p.value is not null)
-           .Select(p => p.coordinate.Value(p.value!.Value));
+    public static IdwTriangle Create(decimal v0x0, decimal v60x0, decimal v30x30, decimal[] levels) =>
+        IdwTriangle.FromPoints("0x0".Value(v0x0), "60x0".Value(v60x0), "30x30".Value(v30x30), levels);
 }

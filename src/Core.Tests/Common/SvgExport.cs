@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Proxoft.Heatmaps.Core.Internals;
 
 namespace Proxoft.Heatmaps.Core.Tests.Common;
 
@@ -54,7 +55,12 @@ internal static class SvgExport
             .Select(p => $"{p.Coordinate.X},{svgHeight - p.Coordinate.Y}")
             .Aggregate((acc, next) => $"{acc} {next}");
 
-        return $"<polyline points=\"{points}\" fill=\"none\" stroke=\"black\"/>";
+        string original = idwLine
+            .Points
+            .Select(p => $"{p.Coordinate.X},{p.Coordinate.Y}")
+            .Aggregate((acc, next) => $"{acc} {next}");
+
+        return $"<polyline points=\"{points}\" original=\"{original}\" fill=\"none\" stroke=\"black\" />";
     }
 
     public static string ToPolyline(this IsoLine isoLine, decimal svgHeight)
@@ -64,7 +70,12 @@ internal static class SvgExport
             .Select(p => $"{p.X},{svgHeight - p.Y}")
             .Aggregate((acc, next) => $"{acc} {next}");
 
-        return $"<polyline points=\"{points}\" fill=\"none\" stroke=\"green\"/>";
+        string original = isoLine
+            .Points
+            .Select(p => $"{p.X},{p.Y}")
+            .Aggregate((acc, next) => $"{acc} {next}");
+
+        return $"<polyline points=\"{points}\" original=\"{original}\" fill=\"none\" stroke=\"green\"/>";
     }
 
     private static string CreateSvg(this Bounds bounds, string content, Padding padding)
