@@ -18,6 +18,7 @@ public static class HeatMapFunctions
         ];
 
         IsoLine[] isoLines = triangles.CreateIsoLines();
+        IsoBand[] isoBands = triangles.CreateIsoBands(levels);
 
         return new HeatMap(items, bounds, grid, isoLines, levels);
     }

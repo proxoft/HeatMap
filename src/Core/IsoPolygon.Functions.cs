@@ -1,5 +1,7 @@
 ﻿namespace Proxoft.Heatmaps.Core;
 
-public class IsoPolygonFunctions
+internal static class IsoPolygonFunctions
 {
+    public static Bounds CalculateBounds(this IsoPolygon polygon) =>
+        Bounds.FromCoordinates(polygon.Points);
 }

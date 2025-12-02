@@ -11,5 +11,7 @@ internal static class BoundsFunctions
                 Right: Math.Max(bounds.Right, other.Right),
                 Bottom: Math.Min(bounds.Bottom, other.Bottom)
             );
+
+        public decimal Area => bounds.Width * bounds.Height;
     }
 }

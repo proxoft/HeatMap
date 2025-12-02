@@ -1,26 +1,46 @@
-﻿using System.Text;
+﻿using System.Runtime.CompilerServices;
+using System.Text;
+using Proxoft.Heatmaps.Core;
 using Proxoft.Heatmaps.Core.Internals;
 
-namespace Proxoft.Heatmaps.Core.Tests.Common;
+namespace Proxoft.Heatmaps.Core.Tests.Svgs;
 
 internal static class SvgExport
 {
+    public static void SaveToSvg(
+        IdwTriangle[]? triangles = null,
+        IsoLine[]? isoLines = null,
+        IsoBand[]? isoBands = null,
+        [CallerFilePath]string callerFilePath = "",
+        [CallerMemberName] string caller = "")
+    {
+        string callerTypeName = Path.GetFileNameWithoutExtension(callerFilePath);
+        SvgExport.ToSvgFile(
+            $"{callerTypeName}_{caller}",
+            idwTriangles: triangles,
+            isoLines: isoLines,
+            isoBands: isoBands
+        );
+    }
+
     public static void ToSvgFile(
         string fileName,
         IdwTriangle[]? idwTriangles = null,
-        IsoLine[]? isoLines = null
+        IsoLine[]? isoLines = null,
+        IsoBand[]? isoBands = null
         )
     {
-        string svg = ToSvg(idwTriangles, isoLines);
+        string svg = ToSvg(idwTriangles, isoLines, isoBands);
         File.WriteAllText(fileName.SvgExtension(), svg);
     }
 
     public static string ToSvg(
         IdwTriangle[]? idwTriangles = null,
-        IsoLine[]? isoLines = null
+        IsoLine[]? isoLines = null,
+        IsoBand[]? isoBands = null
     )
     {
-        Bounds bounds = CalculateBounds(idwTriangles: idwTriangles ?? [], isoLines ?? []);
+        Bounds bounds = CalculateBounds(idwTriangles: idwTriangles ?? [], isoLines ?? [], isoBands ?? []);
 
         StringBuilder sb = new();
         foreach (IdwTriangle triangle in idwTriangles ?? [])
@@ -31,6 +51,22 @@ internal static class SvgExport
         foreach(IsoLine isoLine in isoLines ?? [])
         {
             sb.AppendLine(isoLine.ToPolyline(bounds.Height));
+        }
+
+        string[] fills = [
+            "red",
+            "green",
+            "blue",
+            "orange",
+            "yellow",
+            "gray"
+        ];
+
+        int fillIndex = 0;
+        foreach(IsoBand isoBand in isoBands ?? [])
+        {
+            sb.AppendLine(isoBand.ToPolygon(bounds.Height, fills[fillIndex]));
+            fillIndex = (fillIndex + 1) % fills.Length;
         }
 
         string svg = bounds.CreateSvg(sb.ToString(), Padding.Default);
@@ -78,6 +114,32 @@ internal static class SvgExport
         return $"<polyline points=\"{points}\" original=\"{original}\" fill=\"none\" stroke=\"green\"/>";
     }
 
+    public static string ToPolygon(this IsoBand isoBand, decimal svgHeight, string? fillColor)
+    {
+        string outerPath = isoBand.OuterPolygon.Points
+            .Clockwise()
+            .ToSvgPathPoints(svgHeight)
+            ;
+
+        string[] holePaths = [
+            ..isoBand.InnerPolygons
+                .Select(p => p.Points.CounterClockwise().ToSvgPathPoints(svgHeight))
+        ];
+
+        string path = holePaths
+            .Aggregate(
+                outerPath,
+                (acc, holePath) => $"{acc} {holePath}"
+            );
+
+        return $"<polygon points=\"{path}\" fill=\"{fillColor}\" />";
+    }
+
+    //public static string ToPolygone(this IsoPolygon isoPolygon, decimal svgHeight, string? fillColor)
+    //{
+
+    //}
+
     private static string CreateSvg(this Bounds bounds, string content, Padding padding)
     {
         StringBuilder sb = new();
@@ -92,9 +154,18 @@ internal static class SvgExport
         ? fileName
         : $"{fileName}.svg";
 
+    private static string ToSvgPathPoints(this IEnumerable<Coordinate> coordinates, decimal svgHeight) =>
+        coordinates
+            .Select(c => c.SvgPathPoint(svgHeight))
+            .Aggregate((acc, p) => $"{acc} {p}");
+
+    private static string SvgPathPoint(this Coordinate coordinate, decimal svgHeight) =>
+        $"{coordinate.X},{svgHeight - coordinate.Y}";
+
     private static Bounds CalculateBounds(
         IdwTriangle[] idwTriangles,
-        IsoLine[] isoLines)
+        IsoLine[] isoLines,
+        IsoBand[] isoBands)
     {
         Bounds? bounds = null;
         foreach (IdwTriangle triangle in idwTriangles)
@@ -105,6 +176,11 @@ internal static class SvgExport
         foreach(IsoLine isoLine in isoLines)
         {
             bounds = bounds.MergeOr(Bounds.FromCoordinates(isoLine.Points));
+        }
+
+        foreach (IsoPolygon isoPolygon in isoBands.SelectMany(ib => ib.IsoPolygons))
+        {
+            bounds = bounds.MergeOr(isoPolygon.CalculateBounds());
         }
 
         return bounds ?? new Bounds(10, 10, 100, 100);
@@ -122,7 +198,4 @@ file static class BoundsExtensions
 {
     public static Bounds MergeOr(this Bounds? a, Bounds b) =>
         a is null ? b : a.Merge(b);
-
-    public static Bounds AddPadding(this Bounds bounds, decimal left = 10, decimal top = 10, decimal right = 10, decimal bottom = 10) =>
-        new(bounds.Left - left, bounds.Top - top, bounds.Right + right, bounds.Bottom + bottom);
 }

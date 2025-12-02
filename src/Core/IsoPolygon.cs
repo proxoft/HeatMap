@@ -28,6 +28,8 @@ public sealed class IsoPolygon : ValueObject<IsoPolygon>
 
     public decimal Value { get; }
 
+    public Coordinate[] Points => _points;
+
     protected override bool EqualsCore(IsoPolygon other) =>
         this.Value == other.Value
         && _points.SequenceEqual(other._points);

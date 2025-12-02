@@ -1,15 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
 using Proxoft.Heatmaps.Core.Internals;
+using Proxoft.Heatmaps.Core.Tests.Svgs;
 
 namespace Proxoft.Heatmaps.Core.Tests;
 
-
-public class IdwTriangleTest
+public class IdwTriangleIsoLineTest
 {
     [Fact]
     public void NoIsoLine_Case1()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 10,
             v60x0: 20,
             v30x30: 30,
@@ -27,7 +27,7 @@ public class IdwTriangleTest
     [Fact]
     public void OneIsoLine_C_ToEdgeC()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 10,
             v60x0: 20,
             v30x30: 30,
@@ -50,7 +50,7 @@ public class IdwTriangleTest
     [Fact]
     public void OneIsoLine_B_ToEdgeB()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 30,
             v60x0: 40,
             v30x30: 50,
@@ -73,7 +73,7 @@ public class IdwTriangleTest
     [Fact]
     public void OneIsoLine_A_ToEdgeA()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 40,
             v60x0: 30,
             v30x30: 50,
@@ -96,7 +96,7 @@ public class IdwTriangleTest
     [Fact]
     public void OneIsoLine_EdgeC_To_EdgeB()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 10,
             v60x0: 20,
             v30x30: 10,
@@ -119,7 +119,7 @@ public class IdwTriangleTest
     [Fact]
     public void OneIsoLine_EdgeB_To_EdgeA()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 10,
             v60x0: 10,
             v30x30: 30,
@@ -142,7 +142,7 @@ public class IdwTriangleTest
     [Fact]
     public void OneIsoLine_EdgeB_EdgeC()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 10,
             v60x0: 20,
             v30x30: 26,
@@ -165,7 +165,7 @@ public class IdwTriangleTest
     [Fact]
     public void TwoIsoLines_EdgeA_To_EdgeC_EdgeB()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 30,
             v60x0: 50,
             v30x30: 5,
@@ -192,7 +192,7 @@ public class IdwTriangleTest
     [Fact]
     public void TwoIsoLines_EdgeB_To_EdgeC_VertexA()
     {
-        IdwTriangle t = Factory.Create(
+        IdwTriangle t = IdwTriangleFactory.Create(
             v0x0: 30, // A
             v60x0: 50, // B
             v30x30: 20, // C
@@ -223,10 +223,4 @@ public class IdwTriangleTest
     {
         SvgExport.ToSvgFile(caller ?? "missing-name", idwTriangles: triangles, isoLines: isoLines);
     }
-}
-
-file static class Factory
-{
-    public static IdwTriangle Create(decimal v0x0, decimal v60x0, decimal v30x30, decimal[] levels) =>
-        IdwTriangle.FromPoints("0x0".Value(v0x0), "60x0".Value(v60x0), "30x30".Value(v30x30), levels);
 }
