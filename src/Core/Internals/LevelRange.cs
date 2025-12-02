@@ -1,4 +1,4 @@
-﻿namespace Daves.Heatmaps.Core.Internals;
+﻿namespace Proxoft.Heatmaps.Core.Internals;
 
 internal record struct LevelRange(decimal From, decimal To)
 {
