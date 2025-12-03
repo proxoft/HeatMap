@@ -1,4 +1,4 @@
-﻿namespace Proxoft.Heatmaps.Core;
+﻿namespace Proxoft.Heatmaps.Core.Internals;
 
 internal static class HashCodeExtensions
 {

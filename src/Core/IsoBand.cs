@@ -1,4 +1,6 @@
-﻿namespace Proxoft.Heatmaps.Core;
+﻿using Proxoft.Heatmaps.Core.Internals;
+
+namespace Proxoft.Heatmaps.Core;
 
 public sealed class IsoBand : ValueObject<IsoBand>
 {

@@ -1,6 +1,4 @@
-﻿using Proxoft.Heatmaps.Core.Internals;
-
-namespace Proxoft.Heatmaps.Core;
+﻿namespace Proxoft.Heatmaps.Core;
 
 internal sealed class IdwLine : ValueObject<IdwLine>
 {

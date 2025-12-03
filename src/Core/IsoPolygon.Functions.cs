@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Proxoft.Heatmaps.Core.Internals;
 
 namespace Proxoft.Heatmaps.Core;
 
