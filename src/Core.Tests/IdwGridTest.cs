@@ -1,7 +1,4 @@
-﻿using System;
-using Proxoft.Heatmaps.Core.Internals;
-
-namespace Proxoft.Heatmaps.Core.Tests;
+﻿namespace Proxoft.Heatmaps.Core.Tests;
 
 public class IdwGridTest
 {
@@ -40,6 +37,6 @@ public class IdwGridTest
 
         (_, IsoBand[] isoBands) = grid.CalculateIsoLinesAndIsoBands(levels);
 
-        SvgExport.SaveToSvg([], [], isoBands);
+        SvgExport.SaveToSvg(isoBands: isoBands);
     }
 }
