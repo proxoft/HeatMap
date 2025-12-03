@@ -13,12 +13,7 @@ public static class HeatMapFunctions
         IdwGrid grid = IdwGridFunctions.CalculateIdw(items, bounds, settings);
         decimal[] levels = grid.CalculateLevels();
 
-        IdwTriangle[] triangles = [
-            ..grid.Cells.SelectMany(c => c.SplitToTriangles(levels))
-        ];
-
-        IsoLine[] isoLines = triangles.CreateIsoLines();
-        IsoBand[] isoBands = triangles.CreateIsoBands(levels);
+        (IsoLine[] isoLines, IsoBand[] isoBands) = grid.CalculateIsoLinesAndIsoBands(levels);
 
         return new HeatMap(items, bounds, grid, isoLines, levels);
     }

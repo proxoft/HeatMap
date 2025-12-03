@@ -1,7 +1,24 @@
-﻿namespace Proxoft.Heatmaps.Core;
+﻿using Proxoft.Heatmaps.Core.Internals;
+
+namespace Proxoft.Heatmaps.Core;
 
 internal static class IdwGridFunctions
 {
+    extension (IdwGrid grid)
+    {
+        public (IsoLine[], IsoBand[]) CalculateIsoLinesAndIsoBands(decimal[] levels)
+        {
+            IdwTriangle[] triangles = [
+            ..grid.Cells.SelectMany(c => c.SplitToTriangles(levels))
+            ];
+
+            IsoLine[] isoLines = triangles.CreateIsoLines();
+            IsoBand[] isoBands = triangles.CreateIsoBands(levels);
+
+            return (isoLines, isoBands);
+        }
+    }
+
     public static IdwGrid CalculateIdw(
         this IReadOnlyCollection<Item> items,
         Bounds bounds,
