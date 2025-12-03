@@ -18,10 +18,7 @@ public record Bounds(decimal Left, decimal Top, decimal Right, decimal Bottom)
 
     public static Bounds FromCoordinates(IReadOnlyCollection<Coordinate> coordinates)
     {
-        if (coordinates.Count == 0)
-        {
-            return None;
-        }
+        if (coordinates.Count == 0) return None;
 
         decimal left = coordinates.Min(c => c.X);
         decimal right = coordinates.Max(c => c.X);

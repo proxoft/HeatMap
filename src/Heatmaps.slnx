@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/SolutionItems/">
+    <File Path=".editorconfig" />
     <File Path="Directory.build.props" />
   </Folder>
   <Project Path="Core.Tests/Core.Tests.csproj" Id="6e2ec765-5db0-4646-827d-f42ce1004907" />
