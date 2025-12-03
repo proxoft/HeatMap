@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
 using Proxoft.Heatmaps.Core;
+using Proxoft.Heatmaps.Core.Exports;
 using Proxoft.Heatmaps.Core.Internals;
 
 namespace Proxoft.Heatmaps.Core.Tests.Svgs;
@@ -67,7 +68,7 @@ internal static class SvgExport
         int fillIndex = 0;
         foreach(IsoBand isoBand in isoBands ?? [])
         {
-            sb.AppendLine(isoBand.ToPolygon(bounds.Height, fills[fillIndex]));
+            sb.AppendLine(isoBand.ToSvgPath(bounds.Height, fills[fillIndex]));
             fillIndex = (fillIndex + 1) % fills.Length;
         }
 
@@ -124,25 +125,11 @@ internal static class SvgExport
         return $"<polyline points=\"{points}\" original=\"{original}\" fill=\"none\" stroke=\"green\"/>";
     }
 
-    public static string ToPolygon(this IsoBand isoBand, decimal svgHeight, string? fillColor)
+    public static string ToSvgPath(this IsoBand isoBand, decimal svgHeight, string? fillColor)
     {
-        string outerPath = isoBand.OuterPolygon.Points
-            .Clockwise()
-            .ToSvgPathPoints(svgHeight)
-            ;
+        string path = isoBand.ToSvgPath(svgHeight);
 
-        string[] holePaths = [
-            ..isoBand.InnerPolygons
-                .Select(p => p.Points.CounterClockwise().ToSvgPathPoints(svgHeight))
-        ];
-
-        string path = holePaths
-            .Aggregate(
-                outerPath,
-                (acc, holePath) => $"{acc} {holePath}"
-            );
-
-        return $"<polygon points=\"{path}\" fill=\"{fillColor}\" value=\"{isoBand.Value}\" />";
+        return $"<path d=\"{path}\" fill=\"{fillColor}\" value=\"{isoBand.Value}\" />";
     }
 
     private static string CreateSvg(this Bounds bounds, string content, Padding padding)

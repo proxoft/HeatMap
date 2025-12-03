@@ -1,21 +1,15 @@
-﻿using Proxoft.Heatmaps.Core.Internals;
-
-namespace Proxoft.Heatmaps.Core;
+﻿namespace Proxoft.Heatmaps.Core;
 
 internal static class IsoBandFunctions
 {
     extension(IsoBand isoBand)
     {
-        public bool CanMerge(IsoBand other)
-        {
-            return isoBand.IsoPolygons.Any(p => other.IsoPolygons.Any(p2 => p2.CanMerge(p)));
-        }
+        public bool CanMerge(IsoBand other) =>
+            isoBand.IsoPolygons.Any(p => other.IsoPolygons.Any(p2 => p2.CanMerge(p)));
 
         public IsoBand Merge(IsoBand second)
         {
-            IsoPolygon[] polygons = isoBand.IsoPolygons
-                .TryMerge(second.IsoPolygons)
-                .ToArray();
+            IsoPolygon[] polygons = [.. isoBand.IsoPolygons.TryMerge(second.IsoPolygons)];
 
             return polygons.Length == 0
                 ? isoBand
@@ -30,7 +24,7 @@ internal static class IsoBandFunctions
             List<IsoBand> temp = [.. isoBands];
 
             IsoBand? current = null;
-            List<IsoBand> merged = new();
+            List<IsoBand> merged = [];
 
             while (temp.Count > 0)
             {

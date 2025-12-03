@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Proxoft.Heatmaps.Core;
 
@@ -51,7 +52,6 @@ internal static class IsoPolygonFunctions
 
         private bool IsSelfCutting() =>
             polygon.Points.GroupBy(p => p).Any(g => g.Count() > 1);
-
 
         private IsoPolygon[] SplitSelfCuttingPolygon()
         {
@@ -106,9 +106,7 @@ internal static class IsoPolygonFunctions
                 }
                 else
                 {
-                    IsoPolygon[] mergeResult = current.Merge(toMerge[0])
-                        .ToArray();
-
+                    IsoPolygon[] mergeResult = [.. current.Merge(toMerge[0])];
                     current = mergeResult.FirstOrDefault();
                     temp.AddRange(mergeResult.Skip(1));
                 }

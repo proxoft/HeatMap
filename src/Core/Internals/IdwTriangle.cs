@@ -1,13 +1,19 @@
-﻿namespace Proxoft.Heatmaps.Core.Internals;
+﻿using System.Diagnostics;
 
-internal sealed class IdwTriangle(
+namespace Proxoft.Heatmaps.Core.Internals;
+
+[DebuggerDisplay("{this.DebugString()}")]
+internal record class IdwTriangle(
     IdwLine a,
     IdwLine b,
-    IdwLine c) : ValueObject<IdwTriangle>
+    IdwLine c)
 {
     public IdwLine A { get; } = a;
     public IdwLine B { get; } = b;
     public IdwLine C { get; } = c;
+
+    private string DebugString() =>
+        $"A: {this.A.Points.First()}; B: {this.B.Points.First()}; C: {this.C.Points.First()}";
 
     public static IdwTriangle FromPoints(MapPoint a, MapPoint b, MapPoint c, decimal[] splitEdgesLevels) =>
         new(
@@ -15,12 +21,4 @@ internal sealed class IdwTriangle(
             IdwLine.From(b, c, splitEdgesLevels),
             IdwLine.From(c, a, splitEdgesLevels)
         );
-
-    protected override bool EqualsCore(IdwTriangle other) =>
-        other.A == this.A
-        && other.B == this.B
-        && other.C == this.C;
-
-    protected override int GetHashCodeCore() =>
-        HashCode.Combine(this.A, this.B, this.C);
 }

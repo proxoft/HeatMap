@@ -1,11 +1,13 @@
-﻿namespace Proxoft.Heatmaps.Core;
+﻿using System.Diagnostics;
 
+namespace Proxoft.Heatmaps.Core;
+
+[DebuggerDisplay("{this.ToString()}")]
 public sealed class MapPoint(Coordinate coordinate, decimal value) : ValueObject<MapPoint>
 {
     public decimal Value { get; } = value;
 
     public Coordinate Coordinate { get; } = coordinate;
-
 
     protected override bool EqualsCore(MapPoint other) =>
         other.Value == this.Value && other.Coordinate == this.Coordinate;
@@ -15,6 +17,9 @@ public sealed class MapPoint(Coordinate coordinate, decimal value) : ValueObject
 
     public static implicit operator MapPoint((decimal x, decimal y, decimal value) data) =>
         new(new Coordinate(data.x, data.y), data.value);
+
+    public override string ToString() =>
+        $"[{this.Coordinate.X},{this.Coordinate.Y}]: {this.Value}";
 }
 
 public static class MapPointFunctions

@@ -29,15 +29,14 @@ public class IdwGridTest
                 [10, 20, 30, 35],
                 [15, 35, 44, 36],
                 [22, 37, 48, 38],
-                [25, 29, 33, 37],
+                [25, 29, 33, 37]
             ]
         );
 
         decimal[] levels = [10, 20, 30, 40, 50, 60];
 
         (_, IsoBand[] isoBands) = grid.CalculateIsoLinesAndIsoBands(levels);
-
-        SvgExport.SaveToSvg(isoBands: isoBands);
+        SvgExport.SaveToSvg(triangles: [], isoLines: [], isoBands: isoBands);
     }
 
     [Fact]

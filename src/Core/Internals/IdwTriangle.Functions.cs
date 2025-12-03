@@ -67,7 +67,6 @@ internal static class IdwTriangleIsoBandFunctions
             ..triangle
                 .GetEdgePoints()
                 .FindAtomicIsoBands(levels)
-                .MergeNeighboursWithSameLevel()
         ];
 
         return isoBands;
