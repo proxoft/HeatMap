@@ -4,7 +4,7 @@ namespace Proxoft.Heatmaps.Core;
 
 internal static class IdwGridFunctions
 {
-    extension (IdwGrid grid)
+    extension(IdwGrid grid)
     {
         public (IsoLine[], IsoBand[]) CalculateIsoLinesAndIsoBands(decimal[] levels)
         {
@@ -17,8 +17,35 @@ internal static class IdwGridFunctions
 
             return (isoLines, isoBands);
         }
-    }
 
+        public decimal[] CalculateLevels()
+        {
+            if (grid == IdwGrid.None) return [];
+
+            decimal min = grid.Nodes.Select(n => n.MapPoint.Value).Min();
+            decimal max = grid.Nodes.Select(n => n.MapPoint.Value).Max();
+
+            int levelCount = 6;
+            decimal range = max - min;
+            decimal step = range / (levelCount - 1);
+
+            decimal[] levels = [
+                .. Enumerable
+                    .Range(0, levelCount)
+                    .Select(i => i == levelCount - 1
+                        ? max
+                        : min + step * i
+                )
+                // .Select(s => Math.Round(s))
+            ];
+
+            return levels;
+        }
+    }
+}
+
+internal static class IdwGridCalculation
+{
     public static IdwGrid CalculateIdw(
         this IReadOnlyCollection<Item> items,
         Bounds bounds,
