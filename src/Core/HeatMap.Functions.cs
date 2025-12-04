@@ -13,6 +13,6 @@ public static class HeatMapFunctions
 
         (IsoLine[] isoLines, IsoBand[] isoBands) = grid.CalculateIsoLinesAndIsoBands(levels);
 
-        return new HeatMap(items, bounds, grid, isoLines, levels);
+        return new HeatMap(items, bounds, grid, isoLines, isoBands, levels);
     }
 }

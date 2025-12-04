@@ -7,8 +7,9 @@ public record HeatMap(
     Bounds Bounds,
     IdwGrid IdwGrid,
     IsoLine[] IsoLines,
+    IsoBand[] IsoBands,
     decimal[] Levels
 )
 {
-    public static readonly HeatMap None = new([], Bounds.None, IdwGrid.None, [], []);
+    public static readonly HeatMap None = new([], Bounds.None, IdwGrid.None, [], [], []);
 }
