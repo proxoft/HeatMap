@@ -1,5 +1,15 @@
 ﻿namespace Proxoft.Heatmaps.Core;
 
-public class Heatmap
+// To verify polygons:
+// https://www.desmos.com/calculator/mhq4hsncnh
+public record HeatMap(
+    Item[] Items,
+    Bounds Bounds,
+    IdwGrid IdwGrid,
+    IsoLine[] IsoLines,
+    IsoBand[] IsoBands,
+    decimal[] Levels
+)
 {
+    public static readonly HeatMap None = new([], Bounds.None, IdwGrid.None, [], [], []);
 }
