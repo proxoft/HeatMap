@@ -1,5 +1,5 @@
-﻿using System.Text;
-using Proxoft.Heatmaps.Core;
+﻿using Proxoft.Heatmaps.Core;
+using Proxoft.Heatmaps.Svg;
 
 namespace Proxoft.Heatmaps.Generator.Handlers;
 
@@ -39,5 +39,7 @@ internal static class Export
 
     private static void ExportSvg(this HeatMap heatMap, string filePathPattern)
     {
+        string svg = heatMap.ToSvg(new SvgOptions());
+        File.WriteAllText($"{filePathPattern}.svg", svg);
     }
 }

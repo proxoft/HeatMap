@@ -18,11 +18,12 @@
     
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />
+      <ProjectReference Include="..\Svg\Svg.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="CommandLine" />
-        <Using Include="Proxoft.Optional"/>
+        <Using Include="Proxoft.Optional" />
     </ItemGroup>
 
 </Project>

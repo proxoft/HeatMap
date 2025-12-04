@@ -5,16 +5,12 @@
             <PackagePath>\</PackagePath>
         </None>
     </ItemGroup>
-
+    
     <ItemGroup>
-        <PackageReference Include="Proxoft.ValueObjects" Version="1.1.0" />
+        <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="Proxoft.Heatmaps.Svg" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Using Include="Proxoft.ValueObjects" />
+        <Using Include="Proxoft.Heatmaps.Core" />
     </ItemGroup>
 </Project>

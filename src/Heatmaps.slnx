@@ -6,4 +6,5 @@
   <Project Path="Core.Tests/Core.Tests.csproj" Id="6e2ec765-5db0-4646-827d-f42ce1004907" />
   <Project Path="Core/Core.csproj" Id="ef1fb7ef-040f-4b33-b532-5e3f9b821b95" />
   <Project Path="Generator/Generator.csproj" Id="e548a923-bedf-4c72-826b-d559278948c6" />
+  <Project Path="Svg/Svg.csproj" Id="a76ccb0c-0eb2-43e8-bfc7-2bcc4849c634" />
 </Solution>

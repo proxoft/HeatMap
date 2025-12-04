@@ -16,6 +16,16 @@ internal static class IdwGridFunctions
             return (isoLines, isoBands);
         }
 
+        public Bounds CalculateBounds()
+        {
+            if (grid.Nodes.Length == 0) return Bounds.None;
+
+            GridNode topLeft = grid.Nodes.Single(n => n.GridCoordinate == new GridCoordinate(0, 0));
+            GridNode bottomRight = grid.Nodes.Single(n => n.GridCoordinate == new GridCoordinate(grid.ColCount - 1, grid.RowCount - 1));
+
+            return Bounds.FromCoordinates([topLeft.MapPoint.Coordinate, bottomRight.MapPoint.Coordinate]);
+        }
+
         public decimal[] CalculateLevels()
         {
             if (grid == IdwGrid.None) return [];
