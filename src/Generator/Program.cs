@@ -1,6 +1,6 @@
 ﻿using Proxoft.Heatmaps.Generator.Commands;
+using Proxoft.Heatmaps.Generator.Handlers;
 
-// See https://aka.ms/new-console-template for more information
 bool close = false;
 string?[] verb = args;
 
@@ -10,6 +10,17 @@ while (!close)
         .ParseArguments<GenerateCommand, QuitCommand>(verb)
         .MapResult(
             (GenerateCommand c) => {
+                Option<GenerateError> err = c.CreateHeatmap()
+                    .Do(
+                        error => Console.WriteLine($"Error: {error}")
+                    )
+                    ;
+
+                if(err is None<GenerateError>)
+                {
+                    Console.WriteLine("Done");
+                }
+
                 return !c.Continue;
             },
             (QuitCommand q) => true,

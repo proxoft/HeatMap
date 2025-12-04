@@ -13,10 +13,16 @@
     
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
+      <PackageReference Include="Proxoft.Optional" Version="1.2.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="CommandLine"/>
+        <Using Include="CommandLine" />
+        <Using Include="Proxoft.Optional"/>
     </ItemGroup>
 
 </Project>
