@@ -12,6 +12,7 @@ public static class SvgExport
 
         string[] content = [
             ..heatMap.IsoBands.Render(options.IsoBands, yScaler),
+            ..heatMap.IsoLines.Render(options.IsoLines, yScaler, bounds.Height),
             ..heatMap.Items.Render(options.Items, yScaler, bounds.Height)
         ];
 

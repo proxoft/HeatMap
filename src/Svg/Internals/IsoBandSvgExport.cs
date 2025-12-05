@@ -1,28 +1,40 @@
-﻿using Proxoft.Heatmaps.Core.Exports;
+﻿using System.Drawing;
+using Proxoft.Heatmaps.Core.Exports;
 
 namespace Proxoft.Heatmaps.Svg.Internals;
 
 internal static class IsoBandSvgExport
 {
-    public static IEnumerable<string> Render(this IsoBand[] isoBands, bool doRender, YScaler yScaler)
+    public static IEnumerable<string> Render(
+        this IsoBand[] isoBands,
+        bool doRender,
+        YScaler yScaler)
     {
         if (!doRender) return [];
 
-        string[] fills = [
-            "red",
-            "green",
-            "blue",
-            "orange",
-            "yellow",
-            "gray",
-            "cyan",
-            "purple"
-        ];
+        //string[] fills = [
+        //    "red",
+        //    "green",
+        //    "blue",
+        //    "orange",
+        //    "yellow",
+        //    "gray",
+        //    "cyan",
+        //    "purple"
+        //];
+
+        decimal minLevel = isoBands.Select(i => i.Value)
+            .DefaultIfEmpty(0)
+            .Min();
+
+        decimal maxLevel = isoBands.Select(i => i.Value)
+            .DefaultIfEmpty(0)
+            .Max();
 
         return isoBands.Select((iso, index) =>
         {
-            string fill = fills[index % fills.Length];
-            return iso.ToSvgPath(yScaler, fill);
+            Color color = ColorPalette.BlueRed.InterpolateColor(iso.Value, (minimum: minLevel, maximum: maxLevel));
+            return iso.ToSvgPath(yScaler, color.ToHex());
         });
     }
 

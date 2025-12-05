@@ -12,7 +12,7 @@ internal static class GenerateHeatmap
             {
                 try
                 {
-                    return items.CalculateHeatMap(IdwSettings.Default);
+                    return items.CalculateHeatMap(new IdwSettings(columnsCount: 20, rowsCount: 20));
                 }
                 catch
                 {

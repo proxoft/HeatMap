@@ -20,8 +20,9 @@ public class IdwGrid(GridNode[] nodes)
 
     public IEnumerable<IEnumerable<MapPoint>> Rows => _nodes
         .GroupBy(n => n.GridCoordinate.Row)
-        .Select(group => group.OrderBy(n => n.GridCoordinate.Column))
-        .Select(group => group.Select(n => n.MapPoint));
+        .OrderBy(row => row.Key)
+        .Select(row => row.OrderBy(n => n.GridCoordinate.Column))
+        .Select(row => row.Select(n => n.MapPoint));
 
     public int ColCount => _colCount;
 

@@ -43,8 +43,8 @@ internal static class IdwGridFunctions
                     .Select(i => i == levelCount - 1
                         ? max
                         : min + step * i
-                )
-                // .Select(s => Math.Round(s))
+                    )
+                    .Select((l, i) => i == 0 ? Math.Floor(l) : i == levelCount - 1 ? Math.Ceiling(l) : Math.Round(l))
             ];
 
             return levels;

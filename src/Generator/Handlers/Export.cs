@@ -41,6 +41,8 @@ internal static class Export
     {
         SvgOptions options = new()
         {
+            Items = false,
+            IsoLines = false,
             IsoBands = true
         };
         string svg = heatMap.ToSvg(options);
