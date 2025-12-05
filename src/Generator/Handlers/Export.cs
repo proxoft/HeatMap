@@ -39,7 +39,11 @@ internal static class Export
 
     private static void ExportSvg(this HeatMap heatMap, string filePathPattern)
     {
-        string svg = heatMap.ToSvg(new SvgOptions());
+        SvgOptions options = new()
+        {
+            IsoBands = true
+        };
+        string svg = heatMap.ToSvg(options);
         File.WriteAllText($"{filePathPattern}.svg", svg);
     }
 }
