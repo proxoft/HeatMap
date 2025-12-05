@@ -16,7 +16,12 @@ public class IdwGrid(GridNode[] nodes)
             .DefaultIfEmpty(0)
             .Max();
 
-    public IEnumerable<GridNode> Nodes => _nodes;
+    public GridNode[] Nodes => _nodes;
+
+    public IEnumerable<IEnumerable<MapPoint>> Rows => _nodes
+        .GroupBy(n => n.GridCoordinate.Row)
+        .Select(group => group.OrderBy(n => n.GridCoordinate.Column))
+        .Select(group => group.Select(n => n.MapPoint));
 
     public int ColCount => _colCount;
 

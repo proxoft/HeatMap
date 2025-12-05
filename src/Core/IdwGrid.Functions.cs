@@ -16,6 +16,16 @@ internal static class IdwGridFunctions
             return (isoLines, isoBands);
         }
 
+        public Bounds CalculateBounds()
+        {
+            if (grid.Nodes.Length == 0) return Bounds.None;
+
+            GridNode topLeft = grid.Nodes.Single(n => n.GridCoordinate == new GridCoordinate(0, 0));
+            GridNode bottomRight = grid.Nodes.Single(n => n.GridCoordinate == new GridCoordinate(grid.ColCount, grid.RowCount));
+
+            return Bounds.FromCoordinates([topLeft.MapPoint.Coordinate, bottomRight.MapPoint.Coordinate]);
+        }
+
         public decimal[] CalculateLevels()
         {
             if (grid == IdwGrid.None) return [];
@@ -81,8 +91,8 @@ internal static class IdwGridCalculation
         if (colIndex == 0) return bounds.Left;
         if (colIndex == colCount) return bounds.Right;
 
-        decimal lngDelta = Math.Abs(bounds.Right - bounds.Left) / colCount;
-        return bounds.Left + lngDelta * colIndex;
+        decimal cellWidth = Math.Abs(bounds.Right - bounds.Left) / colCount;
+        return bounds.Left + cellWidth * colIndex;
     }
 
     private static decimal CalculateRowY(Bounds bounds, int rowIndex, int rowCount)
@@ -90,8 +100,8 @@ internal static class IdwGridCalculation
         if (rowIndex == 0) return bounds.Top;
         if (rowIndex == rowCount) return bounds.Bottom;
 
-        decimal latDelta = Math.Abs(bounds.Top - bounds.Bottom) / rowCount;
-        return bounds.Top - latDelta * rowIndex;
+        decimal cellHeight = Math.Abs(bounds.Top - bounds.Bottom) / rowCount;
+        return bounds.Top - cellHeight * rowIndex;
     }
 
     private static GridNode CalculatePoint(
