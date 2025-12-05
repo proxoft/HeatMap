@@ -5,15 +5,11 @@ namespace Proxoft.Heatmaps.Core;
 public class ColorPalette(params Color[] colors)
 {
     public static readonly ColorPalette BlueRed = new(
-         Color.FromArgb(0, 0, 255),   // Blue
-         // Color.FromArgb(75, 0, 255),  // Violet
-         Color.FromArgb(128, 0, 255), // Purple
-         Color.FromArgb(255, 0, 127), // Magenta
-         Color.FromArgb(255, 69, 0),  // Orange-Red
-         // Color.FromArgb(255, 140, 0), // Dark-Orange
-         Color.FromArgb(255, 204, 0), // Yellow
-         Color.FromArgb(255, 215, 0), // Gold/Yellow
-         Color.FromArgb(255, 0, 0)    // Red
+         ColorPaletteFactory.BlueRedColors()
+    );
+
+    public static readonly ColorPalette RedBlue = new(
+         [..ColorPaletteFactory.BlueRedColors().Reverse()]
     );
 
     private readonly Color[] _colors = colors;
@@ -69,6 +65,13 @@ public class ColorPalette(params Color[] colors)
     }
 }
 
+public static class ColorExtensions
+{
+    public static string ToHex(this Color c)
+    {
+        return $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+    }
+}
 
 file static class Operators
 {
@@ -96,10 +99,18 @@ file static class Operators
     }
 }
 
-public static class ColorExtensions
+file static class ColorPaletteFactory
 {
-    public static string ToHex(this Color c)
-    {
-        return $"#{c.R:X2}{c.G:X2}{c.B:X2}";
-    }
+    public static Color[] BlueRedColors() => [
+        Color.FromArgb(0, 0, 255),   // Blue
+        Color.FromArgb(75, 0, 255),  // Violet
+        Color.FromArgb(128, 0, 255), // Purple
+        Color.FromArgb(255, 0, 127), // Magenta
+        Color.FromArgb(255, 69, 0),  // Orange-Red
+        Color.FromArgb(255, 140, 0), // Dark-Orange
+        Color.FromArgb(255, 204, 0), // Yellow
+        Color.FromArgb(255, 215, 0), // Gold/Yellow
+        Color.FromArgb(255, 0, 0)    // Red
+    ];
 }
+

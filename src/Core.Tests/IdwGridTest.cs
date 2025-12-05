@@ -51,7 +51,7 @@ public class IdwGridTest
             ]
         );
 
-        decimal[] levels = grid.CalculateLevels();
+        decimal[] levels = DefaultIsoLevelCalculator.Instance.CalculateLevels(grid);
         Console.WriteLine(string.Join(" ", levels));
 
         (_, IsoBand[] isoBands) = grid.CalculateIsoLinesAndIsoBands(levels);

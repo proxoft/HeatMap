@@ -4,6 +4,9 @@ internal static class IdwGridFunctions
 {
     extension(IdwGrid grid)
     {
+        public decimal Min => grid.Nodes.Select(n => n.MapPoint.Value).DefaultIfEmpty().Min();
+        public decimal Max => grid.Nodes.Select(n => n.MapPoint.Value).DefaultIfEmpty().Max();
+
         public (IsoLine[], IsoBand[]) CalculateIsoLinesAndIsoBands(decimal[] levels)
         {
             IdwTriangle[] triangles = [
@@ -24,30 +27,6 @@ internal static class IdwGridFunctions
             GridNode bottomRight = grid.Nodes.Single(n => n.GridCoordinate == new GridCoordinate(grid.ColCount, grid.RowCount));
 
             return Bounds.FromCoordinates([topLeft.MapPoint.Coordinate, bottomRight.MapPoint.Coordinate]);
-        }
-
-        public decimal[] CalculateLevels()
-        {
-            if (grid == IdwGrid.None) return [];
-
-            decimal min = grid.Nodes.Select(n => n.MapPoint.Value).Min();
-            decimal max = grid.Nodes.Select(n => n.MapPoint.Value).Max();
-
-            int levelCount = 6;
-            decimal range = max - min;
-            decimal step = range / (levelCount - 1);
-
-            decimal[] levels = [
-                .. Enumerable
-                    .Range(0, levelCount)
-                    .Select(i => i == levelCount - 1
-                        ? max
-                        : min + step * i
-                    )
-                    .Select((l, i) => i == 0 ? Math.Floor(l) : i == levelCount - 1 ? Math.Ceiling(l) : Math.Round(l))
-            ];
-
-            return levels;
         }
     }
 }

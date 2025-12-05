@@ -7,33 +7,24 @@ internal static class IsoBandSvgExport
 {
     public static IEnumerable<string> Render(
         this IsoBand[] isoBands,
+        decimal[] isoLevels,
         bool doRender,
+        ColorPalette colorPalette,
         YScaler yScaler)
     {
         if (!doRender) return [];
 
-        //string[] fills = [
-        //    "red",
-        //    "green",
-        //    "blue",
-        //    "orange",
-        //    "yellow",
-        //    "gray",
-        //    "cyan",
-        //    "purple"
-        //];
-
-        decimal minLevel = isoBands.Select(i => i.Value)
+        decimal minLevel = isoLevels
             .DefaultIfEmpty(0)
             .Min();
 
-        decimal maxLevel = isoBands.Select(i => i.Value)
+        decimal maxLevel = isoLevels
             .DefaultIfEmpty(0)
             .Max();
 
         return isoBands.Select((iso, index) =>
         {
-            Color color = ColorPalette.BlueRed.InterpolateColor(iso.Value, (minimum: minLevel, maximum: maxLevel));
+            Color color = colorPalette.InterpolateColor(iso.Value, (minimum: minLevel, maximum: maxLevel));
             return iso.ToSvgPath(yScaler, color.ToHex());
         });
     }

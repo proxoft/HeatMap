@@ -6,17 +6,19 @@ internal static class IsoLineSvgExport
 {
     public static IEnumerable<string> Render(
        this IsoLine[] isoLines,
+       decimal[] isoLevels,
        bool doRender,
+       ColorPalette colorPalette,
        YScaler yScaler,
        decimal svgHeight)
     {
         if (!doRender) return [];
 
-        decimal minLevel = isoLines.Select(i => i.Value)
+        decimal minLevel = isoLevels
             .DefaultIfEmpty(0)
             .Min();
 
-        decimal maxLevel = isoLines.Select(i => i.Value)
+        decimal maxLevel = isoLevels
             .DefaultIfEmpty(0)
             .Max();
 
@@ -24,7 +26,7 @@ internal static class IsoLineSvgExport
 
         return isoLines.Select(line =>
         {
-            Color color = ColorPalette.BlueRed.InterpolateColor(line.Value, (minimum: minLevel, maximum: maxLevel));
+            Color color = colorPalette.InterpolateColor(line.Value, (minimum: minLevel, maximum: maxLevel));
             return line.ToPolyline(color, yScaler, strokeWidth);
         });
     }
@@ -35,11 +37,6 @@ internal static class IsoLineSvgExport
             .Points
             .Select(p => $"{p.X},{yScaler.ToSvgY(p.Y)}")
             .Aggregate((acc, next) => $"{acc} {next}");
-
-        //string original = isoLine
-        //    .Points
-        //    .Select(p => $"{p.X},{p.Y}")
-        //    .Aggregate((acc, next) => $"{acc} {next}");
 
         return $"<polyline points=\"{points}\" value=\"{isoLine.Value}\" fill=\"none\" stroke=\"{color.ToHex()}\" stroke-width=\"{strokeWidth}\" />";
     }

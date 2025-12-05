@@ -9,10 +9,10 @@ public static class SvgExport
     {
         Bounds bounds = heatMap.IdwGrid.CalculateBounds();
         YScaler yScaler = new(bounds.Top);
-
+        ColorPalette colorPalette = ColorPalette.RedBlue;
         string[] content = [
-            ..heatMap.IsoBands.Render(options.IsoBands, yScaler),
-            ..heatMap.IsoLines.Render(options.IsoLines, yScaler, bounds.Height),
+            ..heatMap.IsoBands.Render(heatMap.Levels, options.IsoBands, colorPalette, yScaler),
+            ..heatMap.IsoLines.Render(heatMap.Levels, options.IsoLines, colorPalette, yScaler, bounds.Height),
             ..heatMap.Items.Render(options.Items, yScaler, bounds.Height)
         ];
 
